@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap');
+
 :root {
   /* Lumiverse palette: Theme Editor colors stay live through these aliases. */
   --ac-primary: var(--lumiverse-primary);
@@ -59,7 +61,7 @@
   --ac-radius: var(--lcs-radius);
   --ac-transition: var(--lcs-transition);
 
-  /* Typography: Cormorant Garamond is optional if installed locally. */
+  /* Typography: Lumiverse/system fonts for UI; Cormorant for Abyssal identity. */
   --ac-font-ui: var(--lumiverse-font-family);
   --ac-font-body: var(--ac-font-ui);
   --ac-font-identity: "Cormorant Garamond", Georgia, "Times New Roman", serif;
