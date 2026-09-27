@@ -33,5 +33,6 @@ dist/
 .cache/
 
 # Local working files
-docs/
+docs/*
+!docs/COLOR-PALETTE-AUDIT.md
 reference/
