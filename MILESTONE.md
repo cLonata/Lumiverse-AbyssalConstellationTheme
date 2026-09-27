@@ -6,6 +6,14 @@ Rebuild the adopted Abyssal Constellation theme as a clean, maintainable, lightw
 
 Abyssal is the Lumiverse implementation and visual reference; Honeyed Twilight is the architectural reference; Moonlit Echoes is the visual and composition reference. The current Abyssal CSS is not the architecture to preserve. Prefer semantic Lumiverse hooks such as `data-component` and `data-part` over generated class names. Historical Vxx patch layers should disappear, but preserve or intentionally replace each visual behavior before removing its legacy rule.
 
+### Target Chat Experience
+
+- Desktop uses Moonlit Echoes Echo as the primary composition reference.
+- Mobile uses Moonlit Echoes Whisper as the primary composition reference.
+- Tablet intentionally transitions between Echo-like and Whisper-like composition based on available width, rather than simply shrinking the desktop layout.
+- Reproduce these visual behaviors natively in Lumiverse with one shared Abyssal design system.
+- Share the underlying tokens, message primitives, author-role semantics, metadata system, and artwork system across breakpoints. Responsive composition may change significantly while the design system stays unified.
+
 ## Milestone 0 — Audit
 
 **Status:** Complete
@@ -30,15 +38,24 @@ The initial audit established the repository state, the monolithic Abyssal theme
 
 **Done when:** The shell has a clear structure, no historical Vxx shell patches, no obvious app-chrome regressions, and working baseline chat.
 
-## Milestone 3 — Unified Echo-Inspired Chat System
+## Milestone 3 — Unified Responsive Chat System
 
-**Goal:** Build one shared, parameterized message design inspired by Moonlit Echoes' Echo style.
+**Goal:** Build one shared, parameterized Abyssal message system that produces Echo-inspired composition on desktop and Whisper-inspired composition on mobile.
+
+### Responsive Design Intent
+
+- Desktop composition: Echo.
+- Mobile composition: Whisper.
+- Tablet composition: an intentional intermediate based on available width.
+- Share tokens and message primitives across desktop, tablet, and mobile; user and character roles remain part of one system.
+- Whisper on mobile is a responsive composition of the shared theme, not a separate theme.
+- BubbleMessage and MinimalMessage consume the same visual model.
 
 **Tasks:** Define shared message primitives and geometry variables; compose character and user messages with intentional asymmetry; integrate artwork/avatars while reserving readable content space; style names, quiet metadata, actions, swipe/regeneration controls, streaming, greetings, and system messages.
 
 **Requirement:** The visual design exists once. BubbleMessage and MinimalMessage must not become separate themes; leave their DOM differences to adapters.
 
-**Done when:** Both roles share one recognizable Abyssal design system with Moonlit Echo influence, integrated artwork, subdued metadata, and no duplicate full message implementations.
+**Done when:** Both roles share one recognizable Abyssal design system with Echo-inspired desktop and Whisper-inspired mobile composition, integrated artwork, subdued metadata, and no duplicate full message implementations.
 
 ## Milestone 4 — Bubble & Minimal Adapters
 
@@ -54,11 +71,13 @@ The initial audit established the repository state, the monolithic Abyssal theme
 
 **Goal:** Make the chat system reliable without breakpoint patch stacking.
 
-**Responsive model:** Desktop by default; tablet near 1100px; mobile near 760–820px; add a small-phone override only when evidence requires it.
+**Responsive model:** Desktop uses Echo-style composition; tablet uses a deliberate transitional composition based on width and content constraints; mobile uses Whisper-style composition. Add a small-phone override only where evidence requires it.
+
+**Principle:** Responsive behavior is a composition change, not merely desktop CSS compressed into a smaller viewport.
 
 **Test cases:** Long roleplay and short messages; long names and multiline metadata; large and small portraits; streaming, swipes, regeneration, greetings, system messages, and empty states; tablet and mobile portrait orientation; expanding chat input.
 
-**Done when:** No known overflow or clipping remains, artwork scales predictably, text stays readable, actions remain usable, and there are no chains of breakpoint-specific fixes.
+**Done when:** Echo and Whisper layouts have no known overflow or clipping; artwork scales predictably; text stays readable; actions remain usable; and there are no chains of breakpoint-specific fixes.
 
 ## Milestone 6 — Legacy Debt Purge
 
@@ -78,7 +97,7 @@ The initial audit established the repository state, the monolithic Abyssal theme
 
 **Honeyed:** Preserve a clean cascade, Lumiverse-native behavior, and maintainable structure.
 
-**Moonlit Echoes:** Refine Echo-style composition, integrated artwork, restrained chrome, quiet metadata, generous spacing, translucent message surfaces, and glass input treatment.
+**Moonlit Echoes:** Refine Echo-style desktop and Whisper-style mobile composition, integrated artwork, restrained chrome, quiet metadata, generous spacing, translucent message surfaces, and glass input treatment. Future palette analysis should inspect both Echo and Whisper, since their readability and surface treatment may differ.
 
 **Tasks:** Compare side-by-side desktop, tablet, and mobile screenshots; make a visual consistency and accessibility/readability pass; polish spacing and typography.
 
@@ -95,7 +114,7 @@ The initial audit established the repository state, the monolithic Abyssal theme
 ## Engineering Principles
 
 1. Build behavior, not history.
-2. One visual system, thin adapters.
+2. One shared message system may have different responsive compositions; variants reuse semantic roles, tokens, artwork model, metadata system, and adapters.
 3. Semantic Lumiverse selectors first.
 4. Generated classes only as documented fallbacks.
 5. CSS-first.
