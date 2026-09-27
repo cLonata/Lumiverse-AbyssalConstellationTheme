@@ -4,7 +4,7 @@
 
 Rebuild the adopted Abyssal Constellation theme as a clean, maintainable, lightweight, CSS-first Lumiverse theme. Preserve Lunch's original visual identity, the current Abyssal palette and assets, and Lumiverse-specific behavior. Use Honeyed Twilight for architectural direction and Moonlit Echoes for Echo-style message composition and visual language, without carrying over SillyTavern-specific implementation details.
 
-Abyssal is the Lumiverse implementation and visual reference; Honeyed Twilight is the architectural reference; Moonlit Echoes is the visual and composition reference. The current Abyssal CSS is not the architecture to preserve. Prefer semantic Lumiverse hooks such as `data-component` and `data-part` over generated class names. Historical Vxx patch layers should disappear, but preserve or intentionally replace each visual behavior before removing its legacy rule.
+Abyssal is the Lumiverse implementation and visual reference; Honeyed Twilight is the architectural reference; Moonlit Echoes is the visual and composition reference. The current Abyssal CSS remains only under `reference/` and is not the new source architecture. Prefer semantic Lumiverse hooks such as `data-component` and `data-part` over generated class names. Historical Vxx patch layers do not enter `src/`; preserve or intentionally replace their visual behavior as the clean implementation is built.
 
 ### Target Chat Experience
 
@@ -18,15 +18,17 @@ Abyssal is the Lumiverse implementation and visual reference; Honeyed Twilight i
 
 **Status:** Complete
 
-The initial audit established the repository state, the monolithic Abyssal theme structure, its technical debt, available semantic hooks and fragile generated-class selectors. It identified Abyssal traits to preserve, Honeyed architectural patterns, Moonlit Echo composition patterns, a clean source structure, and the ordered rebuild strategy. Asset path mismatches and the absence of a build pipeline are known baseline issues.
+The initial audit established the repository state, the monolithic Abyssal theme structure, its technical debt, available semantic hooks and fragile generated-class selectors. It identified Abyssal traits to preserve, Honeyed architectural patterns, Moonlit Echo composition patterns, a clean source structure, and the ordered rebuild strategy. Subsequent format verification confirmed that CSS URLs resolve through asset slugs, which map to numbered archive members. The absence of a build pipeline was the baseline issue.
 
 ## Milestone 1 — Reproducible Baseline
 
-**Goal:** Turn the monolithic reference bundle into editable source and a deterministic build without intentionally changing its appearance.
+**Goal:** Validate and establish the packaging/tooling foundation before implementation.
 
-**Tasks:** Create source theme metadata; split `globalCSS` into ordered source CSS files; extract assets to clean source paths and verify slug/archive mappings; add lightweight packaging tooling; build a valid `.lumitheme` in `dist/`. Validate missing assets and duplicate slugs, exclude `reference/` from output, document the build command, and compare generated output with the Abyssal reference for semantic parity.
+**Tasks:** Inspect the original bundle and Lumiverse import/export code; adopt the original artwork at clean source paths; verify asset slug/archive mappings; add deterministic packaging, validation, and optional reference comparison. Prove the packer against a temporary legacy extraction, then discard that extraction. Do not initialize production `src/` until implementation begins.
 
-**Done when:** One command builds a valid theme from editable source; assets resolve; the current cascade and visual behavior are preserved; no redesign has begun; generated output is semantically equivalent to the reference; `reference/` and `dist/` remain uncommitted.
+**Done when:** Packaging self-test builds a valid deterministic archive without `reference/`; adopted asset bytes match the original; normal build exits clearly while source is absent; no `src/` exists; `reference/` and `dist/` remain ignored. No production theme is visually buildable yet.
+
+**Packaging proof:** A temporary extraction of the legacy CSS produced a byte-identical 2,160-line / 70,448-byte `globalCSS`, manifest, and asset payload with deterministic ZIP output. It verified Lumiverse format 3, CSS URL-to-slug-to-`archivePath` mapping, archive compatibility, and baseline comparison. That extracted source was deliberately discarded. `tools/build.py --self-test` now exercises the packer with disposable fixtures; the normal build waits for the new implementation.
 
 ## Milestone 2 — Foundation & Lumiverse Shell
 
@@ -129,7 +131,7 @@ The initial audit established the repository state, the monolithic Abyssal theme
 ## Milestone Status
 
 - [x] Milestone 0 — Audit
-- [ ] Milestone 1 — Reproducible Baseline
+- [x] Milestone 1 — Reproducible Baseline
 - [ ] Milestone 2 — Foundation & Lumiverse Shell
 - [ ] Milestone 3 — Unified Echo-Inspired Chat System
 - [ ] Milestone 4 — Bubble & Minimal Adapters

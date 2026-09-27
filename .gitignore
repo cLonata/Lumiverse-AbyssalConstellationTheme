@@ -31,6 +31,8 @@ GEMINI.md
 node_modules/
 dist/
 .cache/
+__pycache__/
+*.pyc
 
 # Local working files
 docs/*

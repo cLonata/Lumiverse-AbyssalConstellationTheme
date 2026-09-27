@@ -24,7 +24,11 @@ Download the latest `.lumitheme` release and import it through Lumiverse's theme
 
 ## Development
 
-The theme is currently being refactored around a cleaner architecture while retaining the existing Abyssal Constellation look and assets.
+Python 3.10 or newer is required; no packages need installing. `assets/` contains adopted Abyssal artwork. `tools/build.py` is the production packaging path, and `tools/compare_baseline.py` is an optional local reference comparison aid. `reference/` is ignored and contains the old theme for visual, behavioral, and selector research; it is never a build input.
+
+There is no `src/` yet and no production theme can currently be built. The next implementation milestone will create each new source file from scratch. For now, `python tools/build.py` reports that theme source has not been initialized. Run `python tools/build.py --self-test` to validate packaging, asset resolution, and reproducible ZIP output using temporary fixtures. The self-test does not create repository source or a release artifact.
+
+When a built archive exists later, `python tools/compare_baseline.py` can report differences against the local reference bundle. It reports clearly when the optional reference is unavailable.
 
 The project takes inspiration from:
 
