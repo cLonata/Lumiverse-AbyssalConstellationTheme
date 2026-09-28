@@ -1,3 +1,8 @@
+/*
+ * Abyssal Constellation identity font.
+ * Keeps the bundled Cormorant face available for future identity styling;
+ * Lumiverse theme variables supply the current palette and UI primitives.
+ */
 @font-face {
   font-family: "Cormorant Garamond";
   src: url("assets/fonts/cormorant-garamond-600.woff2") format("woff2");
@@ -7,70 +12,5 @@
 }
 
 :root {
-  /* Lumiverse palette: Theme Editor colors stay live through these aliases. */
-  --ac-primary: var(--lumiverse-primary);
-  --ac-secondary: var(--lumiverse-secondary);
-  --ac-background: var(--lumiverse-bg);
-  --ac-text: var(--lumiverse-text);
-  --ac-danger: var(--lumiverse-danger);
-  --ac-success: var(--lumiverse-success);
-  --ac-warning: var(--lumiverse-warning);
-  --ac-speech: var(--lumiverse-prose-dialogue);
-  --ac-thoughts: var(--lumiverse-prose-italic);
-
-  /* Abyssal identity */
-  --ac-abyssal-deep: #01040b;
-  --ac-moonlight: #e7effb;
-  --ac-moonlit-blue: #83afe0;
-  --ac-gold: #e8cf91;
-
-  /* Semantic surfaces */
-  --ac-bg-root: var(--ac-abyssal-deep);
-  --ac-bg-surface: var(--ac-background);
-  --ac-bg-surface-raised: var(--lumiverse-bg-elevated);
-  --ac-bg-glass: var(--lcs-glass-bg);
-  --ac-bg-input: var(--ac-bg-glass);
-  --ac-bg-backdrop: color-mix(in srgb, var(--ac-bg-root) 65%, transparent);
-
-  /* Text */
-  --ac-text-primary: var(--ac-text);
-  --ac-text-secondary: var(--lumiverse-text-muted);
-  --ac-text-muted: var(--lumiverse-text-dim);
-  --ac-text-accent: var(--ac-moonlit-blue);
-
-  /* Accents and status */
-  --ac-accent-primary: var(--ac-primary);
-  --ac-accent-secondary: var(--ac-secondary);
-  --ac-accent-gold: var(--ac-gold);
-  --ac-accent-speech: var(--ac-speech);
-  --ac-accent-thoughts: var(--ac-thoughts);
-  --ac-status-danger: var(--ac-danger);
-  --ac-status-success: var(--ac-success);
-  --ac-status-warning: var(--ac-warning);
-
-  /* Borders */
-  --ac-border-subtle: var(--lumiverse-primary-015);
-  --ac-border-default: var(--lumiverse-primary-020);
-  --ac-border-emphasis: var(--lumiverse-primary-050);
-
-  /* Interaction */
-  --ac-hover: var(--lumiverse-primary-015);
-  --ac-focus-ring: var(--lumiverse-primary-050);
-  --ac-selection-bg: var(--lumiverse-primary-020);
-  --ac-selection-text: var(--ac-moonlight);
-
-  /* Effects */
-  --ac-shadow-soft: var(--lumiverse-shadow-sm);
-  --ac-shadow-deep: var(--lumiverse-shadow-md);
-  --ac-glow-primary: 0 0 18px var(--lumiverse-primary-020);
-  --ac-glow-gold: 0 0 18px rgb(232 207 145 / 18%);
-  --ac-glass-blur: 8px;
-  --ac-radius: var(--lcs-radius);
-  --ac-transition: var(--lcs-transition);
-
-  /* Typography: Lumiverse/system fonts for UI; Cormorant for Abyssal identity. */
-  --ac-font-ui: var(--lumiverse-font-family);
-  --ac-font-body: var(--ac-font-ui);
   --ac-font-identity: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --ac-font-mono: var(--lumiverse-font-mono);
 }

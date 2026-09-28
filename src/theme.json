@@ -9,24 +9,30 @@
     "id": "custom",
     "name": "Abyssal Constellation",
     "mode": "dark",
-    "accent": { "h": 214, "s": 35, "l": 52 },
+    "accent": { "h": 214, "s": 35, "l": 60 },
     "radiusScale": 1,
     "enableGlass": true,
     "fontScale": 1,
+    "uiScale": 1,
+    "statusColors": {
+      "danger": "#c4a475",
+      "success": "#7ba8a1",
+      "warning": "#c4a475"
+    },
     "baseColorsByMode": {
       "dark": {
-        "primary": "#587eaf",
-        "secondary": "#6d91c3",
-        "background": "#030a15",
-        "backgroundDeep": "#01040b",
-        "text": "#e7effb",
-        "danger": "#c66b78",
-        "success": "#559b96",
-        "warning": "#c79b5d",
-        "speech": "#91b5df",
-        "thoughts": "#9fb0c6"
+        "primary": "#769ac6",
+        "secondary": "#769ac6",
+        "background": "#091629",
+        "text": "#e4ecf6",
+        "danger": "#c4a475",
+        "success": "#7ba8a1",
+        "warning": "#c4a475",
+        "speech": "#b4cae5",
+        "thoughts": "#aabbd0"
       }
-    }
+    },
+    "characterAware": false
   },
   "components": {}
 }

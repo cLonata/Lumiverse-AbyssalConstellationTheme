@@ -1,10 +1,9 @@
-body {
-  font-family: var(--ac-font-body);
-  color: var(--ac-text-primary);
-  background-color: var(--ac-bg-root);
-}
-
+/*
+ * Document-level foundations for Abyssal Constellation.
+ * Keeps the theme's text-selection treatment without overriding Lumiverse's
+ * document, wallpaper, or desktop transparency rules.
+ */
 ::selection {
-  color: var(--ac-selection-text);
-  background-color: var(--ac-selection-bg);
+  color: var(--lumiverse-text);
+  background-color: var(--lumiverse-primary-020);
 }

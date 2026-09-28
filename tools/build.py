@@ -15,7 +15,6 @@ ROOT = Path(__file__).resolve().parents[1]
 STYLES = (
     "tokens.css",
     "base.css",
-    "shell.css",
 )
 OUTPUT = ROOT / "dist" / "abyssal-constellation.lumitheme"
 URL = re.compile(r"url\(\s*(['\"]?)([^)'\"\s][^)'\"]*)\1\s*\)", re.I)
@@ -191,7 +190,6 @@ def self_test():
         fixture_css = {
             "tokens.css": '@import url("https://example.com/font.css");\n:root { --fixture: 1; }\n',
             "base.css": 'body { margin: 0; }\n',
-            "shell.css": '.fixture { background: url("assets/sample.svg"); }\n',
         }
         for name in STYLES:
             (fixture / "src" / "styles" / name).write_text(fixture_css[name], encoding="utf-8")
@@ -228,7 +226,7 @@ def self_test():
                 "Self-test did not reject a late CSS @import")
         (fixture / "src" / "styles" / STYLES[1]).write_text(fixture_css[STYLES[1]], encoding="utf-8")
 
-        (fixture / "src" / "styles" / STYLES[2]).write_text(
+        (fixture / "src" / "styles" / STYLES[1]).write_text(
             '.fixture { background: url("assets/missing.svg"); }\n', encoding="utf-8")
         invalid = run_build()
         require(invalid.returncode != 0 and "Unresolved local CSS asset URL" in invalid.stderr,
