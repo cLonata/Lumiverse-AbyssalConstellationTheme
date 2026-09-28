@@ -24,21 +24,21 @@ The initial audit established the repository state, the monolithic Abyssal theme
 
 **Goal:** Validate and establish the packaging/tooling foundation before implementation.
 
-**Tasks:** Inspect the original bundle and Lumiverse import/export code; adopt the original artwork at clean source paths; verify asset slug/archive mappings; add deterministic packaging, validation, and optional reference comparison. Prove the packer against a temporary legacy extraction, then discard that extraction. Do not initialize production `src/` until implementation begins.
+**Historical work:** Inspected the original bundle and Lumiverse import/export code, adopted the original artwork at clean source paths, verified asset slug/archive mappings, and proved deterministic packaging against a temporary legacy extraction. That extraction was discarded; current production source is independent of the reference bundle.
 
-**Done when:** Packaging self-test builds a valid deterministic archive without `reference/`; adopted asset bytes match the original; normal build exits clearly while source is absent; no `src/` exists; `reference/` and `dist/` remain ignored. No production theme is visually buildable yet.
+**Done when:** The packaging self-test builds a valid deterministic format-3 archive without `reference/`, and `reference/` and `dist/` remain ignored.
 
-**Packaging proof:** A temporary extraction of the legacy CSS produced a byte-identical 2,160-line / 70,448-byte `globalCSS`, manifest, and asset payload with deterministic ZIP output. It verified Lumiverse format 3, CSS URL-to-slug-to-`archivePath` mapping, archive compatibility, and baseline comparison. That extracted source was deliberately discarded. `tools/build.py --self-test` now exercises the packer with disposable fixtures; the normal build waits for the new implementation.
+**Packaging proof:** The temporary legacy extraction once produced a byte-identical manifest and payload. That historical comparison is complete. `tools/build.py --self-test` now checks archive validity, asset resolution, CSS validation, and deterministic output with disposable fixtures.
 
-## Milestone 2 — Foundation & Lumiverse Shell
+## Milestone 2 — Foundation & Native Lumiverse Integration
 
-**Goal:** Replace legacy app-shell styling with a clean Honeyed-inspired foundation while leaving chat presentation functionally unchanged.
+**Status:** Complete
 
-**Tasks:** Establish tokens for palette, typography, spacing, glass, blur, borders, shadows, motion, and backgrounds. Rebuild navigation/header, sidebars/drawers, cards/panels, dialogs/modals, forms and input controls, chat input, scrollbars, and minor chrome.
+**Goal:** Establish the Abyssal identity through native Lumiverse theme configuration and a minimal custom CSS foundation.
 
-**Rules:** Let Lumiverse manage layout geometry where possible. Prefer semantic hooks; use generated-class selectors and `!important` only when needed. Do not redesign message layout yet.
+**Scope:** A coherent v46-based `ThemeConfig` drives Lumiverse's native palette generation and live Accent, Primary, and Background customization. Native glass behavior and wallpaper compatibility remain intact. The bundled identity font is available for later character styling; `base.css` adds the custom selection treatment. Navigation, drawers, modals, forms, InputArea, scrollbars, and other app shell elements use native Lumiverse styling unless a future visual requirement justifies an override. Packaging is deterministic and includes only referenced assets.
 
-**Done when:** The shell has a clear structure, no historical Vxx shell patches, no obvious app-chrome regressions, and working baseline chat.
+**Done when:** The format-3 theme builds reproducibly, native theme controls work, wallpaper remains compatible, and no redundant app shell CSS is required. Chat presentation belongs to later milestones.
 
 ## Milestone 3 — Unified Responsive Chat System
 
@@ -81,15 +81,15 @@ The initial audit established the repository state, the monolithic Abyssal theme
 
 **Done when:** Echo and Whisper layouts have no known overflow or clipping; artwork scales predictably; text stays readable; actions remain usable; and there are no chains of breakpoint-specific fixes.
 
-## Milestone 6 — Legacy Debt Purge
+## Milestone 6 — Chat Implementation Debt Review
 
-**Goal:** Remove old implementation only after its replacement behavior is proven.
+**Goal:** Review the completed chat implementation for obsolete fallbacks and avoid new patch layers.
 
-**Tasks:** Remove Vxx sections, superseded and dead rules, duplicate selectors, and obsolete compatibility rules. Reduce unnecessary `!important` and `:has()`, replace fragile selectors where semantic hooks exist, consolidate repeated values, and audit geometry and cascade order.
+**Tasks:** Audit chat selectors, cascade order, responsive geometry, and intentional compatibility fallbacks. Remove dead or superseded rules introduced during chat work. Minimize `!important`, `:has()`, and generated-class selectors where semantic hooks exist.
 
-**Track before and after:** CSS lines and bytes; rule blocks; `!important`, `:has()`, and generated-class selector counts; semantic hook usage; repeated selector count. Metrics diagnose debt, but are not optimization targets.
+**Track before and after:** CSS lines and bytes, rule blocks, `!important`, `:has()`, generated-class selector counts, and semantic hook usage. Metrics diagnose debt; they are not optimization targets.
 
-**Done when:** No historical Vxx sections or known obsolete rules remain; source makes sense without theme history; every remaining `!important` and generated-class selector is intentional. Clarity takes priority over line count.
+**Done when:** Chat source has no known dead rules, and every remaining fallback or fragile selector has a current reason.
 
 ## Milestone 7 — Visual Parity & Polish
 
@@ -123,7 +123,7 @@ The initial audit established the repository state, the monolithic Abyssal theme
 6. Preserve Lumiverse geometry unless overriding it is intentional.
 7. One authoritative declaration per property and state where practical.
 8. No patch-on-patch development.
-9. Remove each legacy rule only after replacement behavior exists.
+9. Keep legacy reference CSS outside `src/`; add only rules justified by current behavior.
 10. Maintainability matters more than minimizing line count.
 11. Keep every milestone buildable and reviewable.
 12. Do not modify files under `reference/`.
@@ -132,10 +132,10 @@ The initial audit established the repository state, the monolithic Abyssal theme
 
 - [x] Milestone 0 — Audit
 - [x] Milestone 1 — Reproducible Baseline
-- [ ] Milestone 2 — Foundation & Lumiverse Shell
+- [x] Milestone 2 — Foundation & Native Lumiverse Integration
 - [ ] Milestone 3 — Unified Echo-Inspired Chat System
 - [ ] Milestone 4 — Bubble & Minimal Adapters
 - [ ] Milestone 5 — Responsive & Edge Cases
-- [ ] Milestone 6 — Legacy Debt Purge
+- [ ] Milestone 6 — Chat Implementation Debt Review
 - [ ] Milestone 7 — Visual Parity & Polish
 - [ ] Milestone 8 — v1.0 Release

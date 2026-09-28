@@ -1,21 +1,5 @@
 [
   {
-    "slug": "assets/backgrounds/abyssal-constellation.svg",
-    "source": "assets/backgrounds/abyssal-constellation.svg",
-    "originalFilename": "abyssal-constellation.svg",
-    "mimeType": "image/svg+xml",
-    "tags": ["background"],
-    "metadata": {}
-  },
-  {
-    "slug": "assets/backgrounds/moonlit-echoes.png",
-    "source": "assets/backgrounds/moonlit-echoes.png",
-    "originalFilename": "moonlit-echoes.png",
-    "mimeType": "image/png",
-    "tags": ["background"],
-    "metadata": {}
-  },
-  {
     "slug": "assets/fonts/cormorant-garamond-600.woff2",
     "source": "assets/fonts/cormorant-garamond-600.woff2",
     "originalFilename": "cormorant-garamond-600.woff2",

@@ -17,8 +17,8 @@ STYLES = (
     "base.css",
 )
 OUTPUT = ROOT / "dist" / "abyssal-constellation.lumitheme"
-URL = re.compile(r"url\(\s*(['\"]?)([^)'\"\s][^)'\"]*)\1\s*\)", re.I)
-CSS_IMPORT = re.compile(r"@import\b[^;]*;", re.I)
+URL = re.compile(r"url\(\s*(?:(['\"])(.*?)\1|([^)'\"\s]+))\s*\)", re.I | re.S)
+CSS_IMPORT = re.compile(r"@import\b", re.I)
 ARCHIVE_PATH = re.compile(r"^[A-Za-z0-9._/-]+$")
 ZIP_DATE = (1980, 1, 1, 0, 0, 0)
 
@@ -52,11 +52,23 @@ def asset_filename(value):
     return name or "asset"
 
 
-def validate_import_order(css):
+def validate_no_import(css):
     without_comments = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
-    for match in CSS_IMPORT.finditer(without_comments):
-        require(not CSS_IMPORT.sub("", without_comments[:match.start()]).strip(),
-                "CSS @import must precede ordinary CSS rules")
+    require(not CSS_IMPORT.search(without_comments), "CSS @import is not supported by Lumiverse theme CSS")
+
+
+def validate_urls(css, slugs):
+    for match in URL.finditer(css):
+        url = (match.group(2) or match.group(3)).strip()
+        lowered = url.lower()
+        require(not lowered.startswith(("http://", "https://")),
+                f"External CSS url() is not supported by Lumiverse theme CSS: {url}")
+        require(not lowered.startswith("javascript:"),
+                f"javascript: CSS url() is not supported by Lumiverse theme CSS: {url}")
+        if lowered.startswith(("data:", "#")):
+            continue
+        normalized = url.removeprefix("./")
+        require(normalized in slugs, f"Unresolved local CSS asset URL: {url}")
 
 
 def load_source():
@@ -84,7 +96,7 @@ def load_source():
         except (OSError, UnicodeError) as exc:
             raise ValueError(f"Missing or invalid source CSS file: {path.relative_to(ROOT)}") from exc
     css = "\n".join(css_parts)
-    validate_import_order(css)
+    validate_no_import(css)
     require(len(css) <= 2_000_000, "CSS exceeds Lumiverse import limit")
 
     assets = read_json(ROOT / "src" / "assets.json")
@@ -118,12 +130,10 @@ def load_source():
         manifest_assets.append({**{key: value for key, value in asset.items() if key != "source"},
                                 "archivePath": destination})
 
-    for match in URL.finditer(css):
-        url = match.group(2).strip()
-        if url.startswith(("http://", "https://", "data:", "blob:", "/", "#")):
-            continue
-        normalized = url.removeprefix("./")
-        require(normalized in slugs, f"Unresolved local CSS asset URL: {url}")
+    validate_urls(css, slugs)
+    for component in metadata["components"].values():
+        validate_no_import(component["css"])
+        validate_urls(component["css"], slugs)
 
     manifest = {**{key: value for key, value in metadata.items() if key != "components"},
                 "globalCSS": css, "components": metadata["components"], "assets": manifest_assets}
@@ -157,8 +167,7 @@ def write_archive(files):
 
 
 def main():
-    require((ROOT / "src").is_dir(),
-            "Theme source has not been initialized yet. Create src/ during the next implementation milestone.")
+    require((ROOT / "src").is_dir(), "Theme source directory is missing: src/")
     manifest, files = load_source()
     write_archive(files)
     print(f"Built {OUTPUT.relative_to(ROOT)}: {len(manifest['globalCSS'].encode('utf-8'))} CSS bytes, "
@@ -188,8 +197,10 @@ def self_test():
         (fixture / "src" / "assets.json").write_text(json.dumps(assets), encoding="utf-8")
         (fixture / "assets" / "sample.svg").write_bytes(asset_bytes)
         fixture_css = {
-            "tokens.css": '@import url("https://example.com/font.css");\n:root { --fixture: 1; }\n',
-            "base.css": 'body { margin: 0; }\n',
+            "tokens.css": ':root { --fixture: 1; }\n',
+            "base.css": ('.fixture { background: url("assets/sample.svg"); '
+                         'mask: url("data:image/svg+xml,%3Csvg/%3E"); '
+                         'filter: url("#fixture"); }\n'),
         }
         for name in STYLES:
             (fixture / "src" / "styles" / name).write_text(fixture_css[name], encoding="utf-8")
@@ -219,18 +230,19 @@ def self_test():
                 (fixture / "src" / "styles" / name).read_bytes().decode("utf-8") for name in STYLES),
                     "Self-test CSS order or content is invalid")
 
-        (fixture / "src" / "styles" / STYLES[1]).write_text(
-            '@import url("https://example.com/late.css");\n', encoding="utf-8")
-        invalid_import = run_build()
-        require(invalid_import.returncode != 0 and "CSS @import must precede" in invalid_import.stderr,
-                "Self-test did not reject a late CSS @import")
-        (fixture / "src" / "styles" / STYLES[1]).write_text(fixture_css[STYLES[1]], encoding="utf-8")
-
-        (fixture / "src" / "styles" / STYLES[1]).write_text(
-            '.fixture { background: url("assets/missing.svg"); }\n', encoding="utf-8")
-        invalid = run_build()
-        require(invalid.returncode != 0 and "Unresolved local CSS asset URL" in invalid.stderr,
-                "Self-test did not reject an unresolved local CSS asset URL")
+        invalid_css = (
+            ('@import url("assets/sample.svg");\n', "CSS @import"),
+            ('body { margin: 0; }\n@import url("assets/sample.svg");\n', "CSS @import"),
+            ('.fixture { background: url("https://example.com/foo.png"); }\n', "External CSS url()"),
+            ('.fixture { background: url("http://example.com/foo.png"); }\n', "External CSS url()"),
+            ('.fixture { background: url("javascript:alert(1)"); }\n', "javascript: CSS url()"),
+            ('.fixture { background: url("assets/missing.svg"); }\n', "Unresolved local CSS asset URL"),
+        )
+        for css, error in invalid_css:
+            (fixture / "src" / "styles" / STYLES[1]).write_text(css, encoding="utf-8")
+            invalid = run_build()
+            require(invalid.returncode != 0 and error in invalid.stderr,
+                    f"Self-test did not reject {error}: {invalid.stderr}")
     print("Packaging self-test passed: valid archive, asset resolution, validation, reproducible ZIP")
 
 

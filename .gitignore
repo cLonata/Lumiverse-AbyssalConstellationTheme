@@ -35,6 +35,4 @@ __pycache__/
 *.pyc
 
 # Local working files
-docs/*
-!docs/COLOR-PALETTE-AUDIT.md
 reference/
