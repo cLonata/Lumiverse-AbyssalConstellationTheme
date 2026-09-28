@@ -24,6 +24,7 @@
   --ac-bg-surface-raised: var(--lumiverse-bg-elevated);
   --ac-bg-glass: var(--lcs-glass-bg);
   --ac-bg-input: var(--ac-bg-glass);
+  --ac-bg-backdrop: color-mix(in srgb, var(--ac-bg-root) 65%, transparent);
 
   /* Text */
   --ac-text-primary: var(--ac-text);
@@ -57,7 +58,7 @@
   --ac-shadow-deep: var(--lumiverse-shadow-md);
   --ac-glow-primary: 0 0 18px var(--lumiverse-primary-020);
   --ac-glow-gold: 0 0 18px rgb(232 207 145 / 18%);
-  --ac-glass-blur: var(--lcs-glass-blur);
+  --ac-glass-blur: 8px;
   --ac-radius: var(--lcs-radius);
   --ac-transition: var(--lcs-transition);
 
