@@ -14,5 +14,13 @@
     "mimeType": "image/png",
     "tags": ["background"],
     "metadata": {}
+  },
+  {
+    "slug": "assets/fonts/cormorant-garamond-600.woff2",
+    "source": "assets/fonts/cormorant-garamond-600.woff2",
+    "originalFilename": "cormorant-garamond-600.woff2",
+    "mimeType": "font/woff2",
+    "tags": ["font"],
+    "metadata": {}
   }
 ]
