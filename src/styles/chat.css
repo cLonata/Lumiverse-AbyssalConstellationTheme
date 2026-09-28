@@ -1,0 +1,167 @@
+/* Abyssal Bubble surface replaces Lumiverse's role and hover background layers. */
+:root [data-component="BubbleMessage"],
+:root [data-component="BubbleMessage"]:hover {
+  background: var(--ac-bubble-bg);
+  border: 1px solid var(--ac-bubble-border);
+}
+
+/* Bubble author-name identity for Abyssal Constellation. */
+/* BubbleMessageDefault has no semantic hook on the author span; these are its verified role name classes. */
+[data-component="BubbleMessage"] [class*="_nameChar_"],
+[data-component="BubbleMessage"] [class*="_nameUser_"] {
+  font-family: var(--ac-font-identity);
+  font-weight: 600;
+  color: var(--ac-identity-champagne);
+  text-shadow: none;
+  font-size: calc(24px * var(--lumiverse-font-scale, 1));
+}
+
+/* BubbleMessageDefault's stacked name and MetaPill have no semantic layout hooks. */
+[data-component="BubbleMessage"][data-part] [class*="_metaWrap_"] {
+  align-items: center;
+}
+
+/* Native role-specific align-self otherwise keeps the pill off center. */
+[data-component="BubbleMessage"][data-part] [class*="_metaPill_"] {
+  align-self: center;
+}
+
+/* Abyssal's historical ✦ sits nearest the portrait. */
+[data-component="BubbleMessage"]:not([data-part="user"]) [class*="_nameChar_"]::before,
+[data-component="BubbleMessage"][class*="_userLeft_"] [class*="_nameUser_"]::before {
+  content: "✦";
+  font-size: 0.65em;
+  margin-right: 0.3em;
+}
+
+[data-component="BubbleMessage"][data-part="user"]:not([class*="_userLeft_"]) [class*="_nameUser_"]::after {
+  content: "✦";
+  font-size: 0.65em;
+  margin-left: 0.3em;
+}
+
+@media (max-width: 768px) {
+  [data-component="BubbleMessage"] [class*="_nameChar_"],
+  [data-component="BubbleMessage"] [class*="_nameUser_"] {
+    font-size: calc(20px * var(--lumiverse-font-scale, 1));
+  }
+}
+
+@media (max-width: 480px) {
+  [data-component="BubbleMessage"] [class*="_nameChar_"],
+  [data-component="BubbleMessage"] [class*="_nameUser_"] {
+    font-size: calc(18px * var(--lumiverse-font-scale, 1));
+  }
+}
+
+/* BubbleMessageDefault's header has no semantic hook; tile v46's star field here. */
+[data-component="BubbleMessage"] [class*="_bubble_"] > [class*="_header_"] {
+  background-image: url("assets/decor/message-stars.svg");
+  background-repeat: repeat;
+  background-position: left top;
+  background-size: 720px 420px;
+}
+
+/* Echo desktop: keep Lumiverse's card, role alignment, and avatar lifecycle. */
+@media (min-width: 1001px) and (hover: hover) and (pointer: fine) {
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"] {
+    --ac-echo-portrait-width: 24px; /* Native side padding when no portrait is visible. */
+    --ac-echo-mask-direction: to right;
+    --ac-echo-portrait-opacity: 0.78;
+  }
+
+  /* Only reserve portrait space when the native image is rendered and visible. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:has(> [class*="_avatarBg_"]) {
+    --ac-echo-portrait-width: clamp(160px, 22%, 280px);
+    min-height: 180px;
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part="user"]:not([class*="_userLeft_"]) {
+    --ac-echo-mask-direction: to left;
+  }
+
+  /* BubbleMessageDefault's small header avatar has no semantic hook. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:has(> [class*="_avatarBg_"]) [class*="_headerLeft_"] > [class*="_avatar_"] {
+    display: none;
+  }
+
+  /* Lumiverse hides avatarBg while streaming; Echo keeps its portrait column. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part="streaming"] > [class*="_avatarBg_"] {
+    display: block !important;
+  }
+
+  /* BubbleMessageDefault's header and content wrappers have no semantic hooks. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:not([data-part="user"]) [class*="_bubble_"] > [class*="_header_"],
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:not([data-part="user"]) [class*="_bubble_"] > [class*="_content_"] {
+    padding-left: var(--ac-echo-portrait-width);
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][class*="_userLeft_"] [class*="_bubble_"] > [class*="_header_"],
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][class*="_userLeft_"] [class*="_bubble_"] > [class*="_content_"] {
+    padding-left: var(--ac-echo-portrait-width);
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part="user"]:not([class*="_userLeft_"]) [class*="_bubble_"] > [class*="_header_"],
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part="user"]:not([class*="_userLeft_"]) [class*="_bubble_"] > [class*="_content_"] {
+    padding-right: var(--ac-echo-portrait-width);
+  }
+
+  /* The native avatarBg fills the card; its mask fades only toward the text. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part] [class*="_avatarBg_"] {
+    width: var(--ac-echo-portrait-width);
+    height: 100%;
+    mask-image: linear-gradient(var(--ac-echo-mask-direction), #000 0%, #000 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(var(--ac-echo-mask-direction), #000 0%, #000 75%, transparent 100%);
+  }
+
+  /* The image's own mask follows its natural aspect-ratio height. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"] [class*="_avatarBgImg_"] {
+    top: 0;
+    height: auto;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 84%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 84%, transparent 100%);
+    opacity: var(--ac-echo-portrait-opacity);
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:hover [class*="_avatarBgImg_"] {
+    opacity: 0.88;
+  }
+
+  :root[data-no-bubble-hover] [data-component="BubbleMessage"]:hover [class*="_avatarBgImg_"] {
+    opacity: var(--ac-echo-portrait-opacity);
+  }
+
+  /* Native scrolling still disables transitions, blur, and heavy shadows. */
+  :root:not([data-no-bubble-avatar-bg]) [data-scrolling] [data-component="BubbleMessage"] [class*="_avatarBgImg_"] {
+    opacity: var(--ac-echo-portrait-opacity) !important;
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"] [class*="_avatarBgScrim_"] {
+    background: none;
+  }
+
+  /* ReasoningBlock is a direct bubble child outside the content wrappers. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:not([data-part="user"]):has(> [class*="_avatarBg_"]) [class*="_bubble_"] > [class*="_container_"],
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][class*="_userLeft_"]:has(> [class*="_avatarBg_"]) [class*="_bubble_"] > [class*="_container_"] {
+    margin-left: var(--ac-echo-portrait-width);
+    margin-right: 24px;
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part="user"]:not([class*="_userLeft_"]):has(> [class*="_avatarBg_"]) [class*="_bubble_"] > [class*="_container_"] {
+    margin-left: 24px;
+    margin-right: var(--ac-echo-portrait-width);
+  }
+
+  /* MessageAudioSlot's inner wrapper has no semantic hook. */
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"]:not([data-part="user"]) [class*="_bubble_"] > [class*="_slot_"] > [class*="_inner_"],
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][class*="_userLeft_"] [class*="_bubble_"] > [class*="_slot_"] > [class*="_inner_"] {
+    padding-left: var(--ac-echo-portrait-width);
+  }
+
+  :root:not([data-no-bubble-avatar-bg]) [data-component="BubbleMessage"][data-part="user"]:not([class*="_userLeft_"]) [class*="_bubble_"] > [class*="_slot_"] > [class*="_inner_"] {
+    padding-right: var(--ac-echo-portrait-width);
+  }
+}

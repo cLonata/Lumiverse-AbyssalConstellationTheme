@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STYLES = (
     "tokens.css",
     "base.css",
+    "chat.css",
 )
 OUTPUT = ROOT / "dist" / "abyssal-constellation.lumitheme"
 URL = re.compile(r"url\(\s*(?:(['\"])(.*?)\1|([^)'\"\s]+))\s*\)", re.I | re.S)
@@ -201,6 +202,7 @@ def self_test():
             "base.css": ('.fixture { background: url("assets/sample.svg"); '
                          'mask: url("data:image/svg+xml,%3Csvg/%3E"); '
                          'filter: url("#fixture"); }\n'),
+            "chat.css": '[data-component="BubbleMessage"] { color: var(--fixture); }\n',
         }
         for name in STYLES:
             (fixture / "src" / "styles" / name).write_text(fixture_css[name], encoding="utf-8")

@@ -1,7 +1,6 @@
 /*
  * Abyssal Constellation identity font.
- * Keeps the bundled Cormorant face available for future identity styling;
- * Lumiverse theme variables supply the current palette and UI primitives.
+ * Lumiverse theme variables supply the palette and UI primitives.
  */
 @font-face {
   font-family: "Cormorant Garamond";
@@ -13,4 +12,7 @@
 
 :root {
   --ac-font-identity: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --ac-identity-champagne: #ddc9a4;
+  --ac-bubble-bg: rgb(9 22 41 / 80%);
+  --ac-bubble-border: rgb(132 162 201 / 19%);
 }
