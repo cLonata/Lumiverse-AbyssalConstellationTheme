@@ -1,0 +1,32 @@
+{
+  "format": 3,
+  "name": "Abyssal Constellation",
+  "author": "Lunch (original); cLonata (adaptation)",
+  "description": "A deep navy Lumiverse theme based on Abyssal Constellation by Lunch, adapted and maintained by cLonata.",
+  "createdAt": 1790533665,
+  "bundleId": "8d45785b-fd83-4aa1-b1b3-b1e2a410570c",
+  "theme": {
+    "id": "custom",
+    "name": "Abyssal Constellation",
+    "mode": "dark",
+    "accent": { "h": 214, "s": 35, "l": 52 },
+    "radiusScale": 1,
+    "enableGlass": true,
+    "fontScale": 1,
+    "baseColorsByMode": {
+      "dark": {
+        "primary": "#587eaf",
+        "secondary": "#6d91c3",
+        "background": "#030a15",
+        "backgroundDeep": "#01040b",
+        "text": "#e7effb",
+        "danger": "#c66b78",
+        "success": "#559b96",
+        "warning": "#c79b5d",
+        "speech": "#91b5df",
+        "thoughts": "#9fb0c6"
+      }
+    }
+  },
+  "components": {}
+}
